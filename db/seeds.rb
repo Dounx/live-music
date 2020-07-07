@@ -12,3 +12,7 @@ user.password_confirmation = 'Dounx'
 user.save
 
 user.rooms.create(playlist_id: 83_834_215)
+
+10.times do
+  Activation.create
+end

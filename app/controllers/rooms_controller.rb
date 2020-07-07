@@ -1,8 +1,9 @@
 class RoomsController < ApplicationController
   def show
-    respond_to do |format|
-      format.json { render json: Room.first }
-      format.html { render :show }
-    end
+    @room = Room.find(params[:id])
+  end
+
+  def index
+    @rooms = current_user.rooms
   end
 end

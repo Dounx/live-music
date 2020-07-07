@@ -6,10 +6,13 @@
     <%= csp_meta_tag %>
 
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body>
+    <% if current_user %>
+      <%= button_to 'Exit', sessions_path, method: :delete, data: { confirm: "确认？" } %>
+    <% end %>
     <%= yield %>
+    <div id='root' />
   </body>
 </html>

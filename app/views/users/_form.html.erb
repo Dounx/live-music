@@ -1,0 +1,17 @@
+<%= form_for(@user) do |f| %>
+  <%= render 'shared/error_messages', object: f.object %>
+
+  <%= f.label :name, "Name" %>
+  <%= f.text_field :name, class: 'form-control' %>
+
+  <%= label :name, "Activation Code" %>
+  <%= text_field :activation, :token, class: 'form-control' %>
+
+  <%= f.label :password, "Password" %>
+  <%= f.password_field :password, class: 'form-control' %>
+
+  <%= f.label :password_confirmation, "Password Confirmation" %>
+  <%= f.password_field :password_confirmation, class: 'form-control' %>
+
+  <%= f.submit yield(:button_text), class: "btn btn-primary" %>
+<% end %>

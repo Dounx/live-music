@@ -3,8 +3,6 @@ import ReactDOM from 'react-dom'
 import ReactAplayer from 'react-aplayer'
 import MusicAPI from './music-api'
 
-import 'antd/dist/antd.css'
-
 class Player extends React.Component {
     componentDidUpdate(prevProps) {
         if (this.props.audio !== prevProps.audio) {
@@ -62,7 +60,12 @@ class Player extends React.Component {
 class Room extends React.Component {
     constructor(props) {
         super(props);
+
+        const cookie = localStorage.getItem('neteaseCloudMusicCookie')
+        console.log(cookie)
         this.state = {
+            playlistId: this.props.playlistId,
+            api: new MusicAPI(cookie),
             playlist: {
                 tracks: []
             }
@@ -70,10 +73,9 @@ class Room extends React.Component {
     }
 
     async componentDidMount() {
-        let mapi = new MusicAPI()
-        await mapi.loginByPhone(1234567890, '1234567890')
-        let playlistId = await mapi.getPlaylistId(1)
-        let playlist = await mapi.getPlaylist(playlistId)
+        const { api, playlistId } = this.state
+
+        let playlist = await api.getPlaylist(playlistId)
 
         this.setState({playlist: playlist})
     }
@@ -85,9 +87,45 @@ class Room extends React.Component {
     }
 }
 
+class Login extends React.Component {
+    async onSubmit(event) {
+        event.preventDefault()
+        const phone = event.target[0].value
+        const password = event.target[1].value
+        const api = new MusicAPI()
+        const cookie = await api.loginByPhone(phone, password)
+
+        if (cookie) {
+            localStorage.setItem('neteaseCloudMusicCookie', cookie)
+            location.reload()
+        }
+    }
+
+    render() {
+        return (
+            <form onSubmit={this.onSubmit}>
+                <input />
+                <input type="password" />
+                <button>Submit</button>
+            </form>
+        )
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-    ReactDOM.render(
-        <Room />,
-        document.getElementById('root')
-    )
+    const node = document.getElementById('playlist-id')
+    const playlistId = node.getAttribute('value')
+    const cookie = localStorage.getItem('neteaseCloudMusicCookie')
+
+    if (cookie) {
+        ReactDOM.render(
+            <Room playlistId={playlistId} />,
+            document.getElementById('root')
+        )
+    } else {
+        ReactDOM.render(
+            <Login />,
+            document.getElementById('root')
+        )
+    }
 })

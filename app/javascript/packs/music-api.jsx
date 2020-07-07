@@ -1,10 +1,8 @@
 export default class MusicApi {
     HOST = 'http://localhost:4000'
 
-    constructor() {
-        this.cookie = undefined
-        this.profile = undefined
-        this.isLogin = false
+    constructor(cookie = null) {
+        this.cookie = cookie
     }
 
     async loginByPhone(phone, password) {
@@ -17,15 +15,7 @@ export default class MusicApi {
         })
         let data = await res.json()
 
-        if (data.code === 200) {
-            this.cookie = data.cookie
-            this.profile = data.profile
-            this.isLogin = true
-        } else {
-            return false
-        }
-
-        return true
+        return data.cookie
     }
 
     async loginByEmail(email, password) {
@@ -38,26 +28,11 @@ export default class MusicApi {
         })
         let data = await res.json()
 
-        if (data.code === 200) {
-            this.cookie = data.cookie
-            this.profile = data.profile
-            this.isLogin = true
-        } else {
-            return false
-        }
-
-        return true
-    }
-
-    async getPlaylistId(roomId) {
-        let res = await fetch(`http://127.0.0.1:3000/rooms/${roomId}.json`)
-        let data = await res.json()
-
-        return data.playlist_id
+        return data.cookie
     }
 
     async getPlaylist(playlistId) {
-        if (!this.isLogin) {
+        if (!this.cookie) {
             throw 'Not Login'
         }
 
@@ -80,7 +55,7 @@ export default class MusicApi {
     }
 
     getProfile() {
-        if (!this.isLogin) {
+        if (!this.cookie) {
             throw 'Not Login'
         }
 
@@ -88,6 +63,10 @@ export default class MusicApi {
             nickname: this.profile.nickname,
             avatarUrl: this.profile.avatarUrl
         }
+    }
+
+    setCookie(cookie) {
+        this.cookie = cookie
     }
 
     async _getSongDetail(songId) {
