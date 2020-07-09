@@ -1,0 +1,30 @@
+<%= javascript_pack_tag 'netease-logout', 'data-turbolinks-track': 'reload' %>
+
+<nav class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+  <a class="navbar-brand my-0 mr-md-auto font-weight-normal" href="/">Live Music</a>
+  <nav class="my-2 my-md-0 mr-md-3">
+    <a class="p-2 text-dark" href="https://space.bilibili.com/386290533">哔哩哔哩</a>
+    <a class="p-2 text-dark" href="https://blog.dounx.me">博客</a>
+    <a class="p-2 text-dark" href="https://github.com/dounx/live-music">GitHub</a>
+  </nav>
+  <ul class="navbar-nav my-2 my-lg-0">
+    <% unless login? %>
+      <li class="nav-item">
+        <%= link_to('登陆', new_sessions_path, class: 'nav-link') %>
+      </li>
+    <% else %>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <%= current_user.name %>
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <%= link_to('房间', rooms_path, class: 'dropdown-item') %>
+          <%= link_to('设置', edit_user_path(current_user), class: 'dropdown-item') %>
+          <div class="dropdown-divider"></div>
+          <%= link_to('登出', sessions_path, method: :delete, class: 'dropdown-item') %>
+          <div id="netease-logout" />
+        </div>
+      </li>
+    <% end %>
+  </ul>
+</nav>

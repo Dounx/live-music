@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>LiveMusic</title>
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
-
-    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <title>Live Music</title>
+    <%= render 'layouts/rails_default' %>
+    <%= render 'layouts/shim' %>
   </head>
 
   <body>
-    <% if current_user %>
-      <%= button_to 'Exit', sessions_path, method: :delete, data: { confirm: "确认？" } %>
-    <% end %>
-    <%= yield %>
-    <div id='root' />
+    <%= render 'layouts/header' %>
+    <div class='container-fluid'>
+      <%= render partial: 'layouts/flash', flash: flash %>
+      <div class="p-3 px-md-4 mb-3">
+        <%= yield %>
+        <div id='root'></div>
+      </div>
+    </div>
+    <%= render 'layouts/footer' %>
   </body>
 </html>

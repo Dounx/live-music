@@ -61,7 +61,7 @@ class Room extends React.Component {
     constructor(props) {
         super(props);
 
-        const cookie = localStorage.getItem('neteaseCloudMusicCookie')
+        const cookie = localStorage.getItem('cookie')
         console.log(cookie)
         this.state = {
             playlistId: this.props.playlistId,
@@ -93,21 +93,31 @@ class Login extends React.Component {
         const phone = event.target[0].value
         const password = event.target[1].value
         const api = new MusicAPI()
-        const cookie = await api.loginByPhone(phone, password)
+        const data = await api.loginByPhone(phone, password)
+        const cookie = data.cookie
 
         if (cookie) {
-            localStorage.setItem('neteaseCloudMusicCookie', cookie)
+            localStorage.setItem('cookie', cookie)
             location.reload()
         }
     }
 
     render() {
         return (
-            <form onSubmit={this.onSubmit}>
-                <input />
-                <input type="password" />
-                <button>Submit</button>
-            </form>
+            <div className="wrapper fadeInDown">
+                <div id="formContent">
+                    <div>
+                        <h2>网易云账号登陆</h2>
+                    </div>
+                    <form onSubmit={this.onSubmit}>
+                        <input autoFocus autoComplete="username" placeholder="手机号" className="styled-input"/>
+                        <input type="password" autoComplete="current-password" placeholder="密码" className="styled-input" />
+                        <div className="actions">
+                            <input type="submit" name="commit" value="登陆" data-disable-with="登陆" />
+                        </div>
+                    </form>
+                </div>
+            </div>
         )
     }
 }
@@ -115,7 +125,7 @@ class Login extends React.Component {
 document.addEventListener('DOMContentLoaded', () => {
     const node = document.getElementById('playlist-id')
     const playlistId = node.getAttribute('value')
-    const cookie = localStorage.getItem('neteaseCloudMusicCookie')
+    const cookie = localStorage.getItem('cookie')
 
     if (cookie) {
         ReactDOM.render(

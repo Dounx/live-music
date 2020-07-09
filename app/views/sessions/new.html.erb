@@ -1,25 +1,25 @@
-<% provide(:title, "登录") %>
-<h1>登录</h1>
+<div class="wrapper fadeInDown">
+  <div id="formContent">
+    <div>
+      <h2>用户登陆</h2>
+    </div>
 
-<div class="row">
-  <div class="">
     <%= form_for(:session, url: sessions_path) do |f| %>
-
-      <%= f.label :name %>
-      <%= f.text_field :name, class: 'form-control' %>
-
-      <%= f.label :password %>
-      <%#= link_to "(忘记密码)" %>
-      <%= f.password_field :password, class: 'form-control' %>
+      <%= f.text_field :name, autofocus: true, autocomplete: "username", placeholder: '用户名', class: 'styled-input' %>
+      <%= f.password_field :password, autocomplete: "current-password", placeholder: '密码', class: 'styled-input' %>
 
       <%= f.label :remember_me, class: 'checkbox inline' do %>
         <%= f.check_box :remember_me %>
         <span>记住我</span>
       <% end %>
 
-      <%= f.submit "登录", class: "btn btn-primary" %>
+      <div class="actions">
+        <%= f.submit '登陆' %>
+      </div>
     <% end %>
 
-    <p>新用户？<%= link_to "现在注册", new_user_path%>
+    <div id="formFooter">
+      <p>新用户？<%= link_to "现在注册", new_user_path %>
+    </div>
   </div>
 </div>

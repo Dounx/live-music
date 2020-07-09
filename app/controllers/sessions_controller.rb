@@ -8,16 +8,16 @@ class SessionsController < ApplicationController
     if @user&.authenticate(params[:session][:password])
       login @user
       params[:session][:remember_me] ? remember(@user) : forget(@user)
+      flash[:success] = '登陆成功'
       redirect_to rooms_url
     else
-      flash.now[:danger] = 'Wrong name or password'
+      flash.now[:error] = '用户名或密码错误'
       render 'new'
     end
   end
 
   def destroy
     logout if login?
-    flash[:success] = 'Logout Successful'
     redirect_to root_url
   end
 end

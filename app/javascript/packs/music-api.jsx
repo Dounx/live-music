@@ -11,11 +11,11 @@ export default class MusicApi {
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
             },
-            body: JSON.stringify({phone: phone, password: password})
+            body: JSON.stringify({ phone: phone, password: password })
         })
         let data = await res.json()
 
-        return data.cookie
+        return data
     }
 
     async loginByEmail(email, password) {
@@ -24,11 +24,11 @@ export default class MusicApi {
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
             },
-            body: JSON.stringify({email: email, password: password})
+            body: JSON.stringify({ email: email, password: password })
         })
         let data = await res.json()
 
-        return data.cookie
+        return data
     }
 
     async getPlaylist(playlistId) {
@@ -52,21 +52,6 @@ export default class MusicApi {
         }
 
         return this._format(playlist)
-    }
-
-    getProfile() {
-        if (!this.cookie) {
-            throw 'Not Login'
-        }
-
-        return {
-            nickname: this.profile.nickname,
-            avatarUrl: this.profile.avatarUrl
-        }
-    }
-
-    setCookie(cookie) {
-        this.cookie = cookie
     }
 
     async _getSongDetail(songId) {

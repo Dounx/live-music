@@ -1,17 +1,27 @@
-<%= form_for(@user) do |f| %>
-  <%= render 'shared/error_messages', object: f.object %>
+<div class="wrapper fadeInDown">
+  <div id="formContent">
+    <div>
+      <h2>注册</h2>
+    </div>
 
-  <%= f.label :name, "Name" %>
-  <%= f.text_field :name, class: 'form-control' %>
+    <%= form_for(@user) do |f| %>
+      <%= render 'shared/error_messages', object: f.object %>
 
-  <%= label :name, "Activation Code" %>
-  <%= text_field :activation, :token, class: 'form-control' %>
+      <%= f.text_field :name, autofocus: true, autocomplete: 'username', placeholder: '用户名', class: 'styled-input' %>
 
-  <%= f.label :password, "Password" %>
-  <%= f.password_field :password, class: 'form-control' %>
+      <%= text_field :activation, :token, placeholder: '激活码', class: 'styled-input' %>
 
-  <%= f.label :password_confirmation, "Password Confirmation" %>
-  <%= f.password_field :password_confirmation, class: 'form-control' %>
+      <%= f.password_field :password, autocomplete: 'new-password', placeholder: '密码', class: 'styled-input' %>
 
-  <%= f.submit yield(:button_text), class: "btn btn-primary" %>
-<% end %>
+      <%= f.password_field :password_confirmation, autocomplete: 'new-password', placeholder: '确认密码', class: 'styled-input' %>
+
+      <div class="actions">
+        <%= f.submit '注册' %>
+      </div>
+    <% end %>
+
+    <div id="formFooter">
+      <p>已有帐号？<%= link_to "现在登陆", new_sessions_path %>
+    </div>
+  </div>
+</div>
