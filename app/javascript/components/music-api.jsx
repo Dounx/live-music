@@ -1,7 +1,8 @@
 export default class MusicApi {
     HOST = 'http://localhost:4000'
 
-    constructor(cookie = null) {
+    constructor(id = null, cookie = null) {
+        this.id = id
         this.cookie = cookie
     }
 
@@ -26,6 +27,17 @@ export default class MusicApi {
             },
             body: JSON.stringify({ email: email, password: password })
         })
+        let data = await res.json()
+
+        return data
+    }
+
+    async getPlaylists() {
+        if (!this.cookie) {
+            throw 'Not Login'
+        }
+
+        let res = await fetch(`${this.HOST}/user/playlist?uid=${this.id}&cookie=${this.cookie}`)
         let data = await res.json()
 
         return data

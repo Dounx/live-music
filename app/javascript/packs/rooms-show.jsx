@@ -6,12 +6,13 @@ import NeteaseLogin from '../components/netease-login'
 
 class Room extends React.Component {
     constructor(props) {
-        super(props);
+        super(props)
 
-        const cookie = localStorage.getItem('cookie')
+        const { id, cookie } = localStorage
+
         this.state = {
             playlistId: this.props.playlistId,
-            api: new MusicAPI(cookie),
+            api: new MusicAPI(id, cookie),
             playlist: {
                 tracks: []
             }
@@ -23,7 +24,9 @@ class Room extends React.Component {
 
         let playlist = await api.getPlaylist(playlistId)
 
-        this.setState({playlist: playlist})
+        this.setState({
+            playlist: playlist
+        })
     }
 
     render() {

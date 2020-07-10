@@ -17,7 +17,7 @@
         <%= link_to('房间', rooms_path, class: 'dropdown-item') %>
         <%= link_to('设置', edit_user_path(current_user), class: 'dropdown-item') %>
         <div class="dropdown-divider"></div>
-        <%= link_to('登出', sessions_path, method: :delete, class: 'dropdown-item') %>
+        <%= link_to('退出账号', sessions_path, method: :delete, id: 'logout', class: 'dropdown-item') %>
         <div id="netease-logout"></div>
       </div>
     </li>

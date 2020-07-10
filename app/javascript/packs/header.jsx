@@ -11,4 +11,13 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('netease-logout')
         )
     }
+
+    const element = (document.getElementById('logout'))
+
+    if (element) {
+        element.addEventListener('click', () => {
+            localStorage.removeItem('id')
+            localStorage.removeItem('cookie')
+        })
+    }
 })

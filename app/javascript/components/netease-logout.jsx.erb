@@ -1,0 +1,19 @@
+import React from 'react'
+
+<% include Rails.application.routes.url_helpers %>
+
+export default class Logout extends React.Component {
+    handleClick(event) {
+        event.preventDefault()
+
+        localStorage.removeItem('id')
+        localStorage.removeItem('cookie')
+        location.replace('<%= url_for(rooms_path) %>')
+    }
+
+    render() {
+        return (
+            <a className='dropdown-item' rel='nofollow' href='' onClick={this.handleClick}>切换网易云账号</a>
+        )
+    }
+}

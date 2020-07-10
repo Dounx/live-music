@@ -10,9 +10,11 @@ export default class Login extends React.Component {
         const api = new MusicAPI()
         const data = await api.loginByPhone(phone, password)
         const cookie = data.cookie
+        const id = data.account.id
 
         if (cookie) {
             localStorage.setItem('cookie', cookie)
+            localStorage.setItem('id', id)
             location.reload()
         } else {
             flash('error', '手机号或者密码错误')

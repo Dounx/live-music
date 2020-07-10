@@ -1,9 +1,8 @@
 class RoomsController < ApplicationController
   def show
-    @room = Room.find(params[:id])
+    playlist_id = params[:id].to_i
+    @room = current_user.rooms.find_or_create_by(playlist_id: playlist_id)
   end
 
-  def index
-    @rooms = current_user.rooms
-  end
+  def index; end
 end
