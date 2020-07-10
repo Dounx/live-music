@@ -3,7 +3,7 @@ import React from 'react'
 import NeteaseLogin from '../components/netease-login'
 import Playlist from '../components/playlist'
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('turbolinks:load', () => {
     const { id, cookie } = localStorage
 
     if (cookie) {

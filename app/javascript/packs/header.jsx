@@ -2,7 +2,7 @@ import ReactDOM from 'react-dom'
 import React from 'react'
 import NeteaseLogout from '../components/netease-logout'
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('turbolinks:load', () => {
     const cookie = localStorage.getItem('cookie')
 
     if (cookie) {

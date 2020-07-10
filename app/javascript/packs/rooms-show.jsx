@@ -38,7 +38,7 @@ class Room extends React.Component {
 
 
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('turbolinks:load', () => {
     const node = document.getElementById('playlist-id')
     const playlistId = node.getAttribute('value')
     const cookie = localStorage.getItem('cookie')
