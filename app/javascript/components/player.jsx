@@ -56,9 +56,7 @@ export default class Player extends React.Component {
 
         return (
             <div>
-                {
-                    this.state.isLoading ? <Spinner /> : null
-                }
+                { this.state.isLoading ? <Spinner /> : null }
                 <Aplayer
                     {...props}
                     onInit={this.onInit}

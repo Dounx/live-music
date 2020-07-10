@@ -1,5 +1,6 @@
 import React from 'react'
 import MusicApi from './music-api'
+import Spinner from './spinner'
 
 <% include Rails.application.routes.url_helpers %>
 
@@ -52,14 +53,18 @@ export default class Playlist extends React.Component {
             id: props.id,
             cookie: props.cookie,
             api: new MusicApi(props.id, props.cookie),
-            playlists: []
+            playlists: [],
+            isLoading: true
         }
     }
 
     async componentDidMount() {
         const { id, api } = this.state
         const data = await api.getPlaylists(id)
-        this.setState({ playlists: data.playlist })
+        this.setState({
+            playlists: data.playlist,
+            isLoading: false
+        })
     }
 
     render() {
@@ -73,8 +78,11 @@ export default class Playlist extends React.Component {
         )
 
         return (
-            <div className="card-deck">
-                {playlists}
+            <div>
+                { this.state.isLoading ? <Spinner /> : null }
+                <div className="card-deck">
+                    {playlists}
+                </div>
             </div>
         )
     }

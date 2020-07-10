@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class SessionsController < ApplicationController
+  before_action :logged_in_user, only: %i[destroy]
+
   def new; end
 
   def create
@@ -9,7 +11,7 @@ class SessionsController < ApplicationController
       login @user
       params[:session][:remember_me] ? remember(@user) : forget(@user)
       flash[:success] = '登陆成功'
-      redirect_to rooms_url
+      redirect_back_or @user
     else
       flash.now[:error] = '用户名或密码错误'
       render 'new'
