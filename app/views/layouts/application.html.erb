@@ -8,11 +8,11 @@
 
   <body>
     <%= render 'layouts/header' %>
-    <div class='container-fluid'>
+    <div class="container-fluid">
       <%= render partial: 'layouts/flash', flash: flash %>
       <div class="p-3 px-md-4 mb-3">
         <%= yield %>
-        <div id='root'></div>
+        <div id="root"></div>
       </div>
     </div>
     <%= render 'layouts/footer' %>

@@ -5,8 +5,8 @@
     </div>
 
     <%= form_for(:session, url: sessions_path) do |f| %>
-      <%= f.text_field :name, autofocus: true, autocomplete: "username", placeholder: '用户名', class: 'styled-input' %>
-      <%= f.password_field :password, autocomplete: "current-password", placeholder: '密码', class: 'styled-input' %>
+      <%= f.text_field :name, autofocus: true, autocomplete: 'username', placeholder: '用户名', class: 'styled-input' %>
+      <%= f.password_field :password, autocomplete: 'current-password', placeholder: '密码', class: 'styled-input' %>
 
       <%= f.label :remember_me, class: 'checkbox inline' do %>
         <%= f.check_box :remember_me %>
@@ -19,7 +19,7 @@
     <% end %>
 
     <div id="formFooter">
-      <p>新用户？<%= link_to "现在注册", new_user_path %>
+      <p>新用户？<%= link_to '现在注册', new_user_path %>
     </div>
   </div>
 </div>

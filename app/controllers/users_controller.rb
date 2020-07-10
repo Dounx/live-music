@@ -15,10 +15,10 @@ class UsersController < ApplicationController
     activation = Activation.find_by(token: token)
 
     if activation&.use
-      flash[:success] = 'Register Successful'
+      flash[:success] = '注册成功'
       redirect_to new_sessions_url
     else
-      flash[:warn] = 'Wrong Activation Code'
+      flash[:error] = '激活码错误'
       render 'new'
     end
   end
@@ -30,7 +30,7 @@ class UsersController < ApplicationController
   def update
     @user = User.find(params[:id])
     if @user.update(user_params)
-      flash[:success] = 'User Info Updated'
+      flash[:success] = '更新成功'
     else
       render 'edit'
     end
@@ -42,7 +42,7 @@ class UsersController < ApplicationController
 
   def destroy
     User.find(params[:id]).destroy
-    flash[:success] = 'User Has Been Deleted'
+    flash[:success] = '删除成功'
     redirect_to users_url
   end
 
