@@ -20,13 +20,18 @@ class Room extends React.Component {
     }
 
     async componentDidMount() {
+        this.mounted = true
         const { api, playlistId } = this.state
-
         let playlist = await api.getPlaylist(playlistId)
+        if(this.mounted) {
+            this.setState({
+                playlist: playlist
+            })
+        }
+    }
 
-        this.setState({
-            playlist: playlist
-        })
+    componentWillUnmount() {
+        this.mounted = false
     }
 
     render() {
@@ -36,22 +41,22 @@ class Room extends React.Component {
     }
 }
 
-
-
 document.addEventListener('turbolinks:load', () => {
-    const node = document.getElementById('playlist-id')
-    const playlistId = node.getAttribute('value')
-    const cookie = localStorage.getItem('cookie')
+    if (document.getElementById('rooms-show')) {
+        const node = document.getElementById('playlist-id')
+        const playlistId = node.getAttribute('value')
+        const cookie = localStorage.getItem('cookie')
 
-    if (cookie) {
-        ReactDOM.render(
-            <Room playlistId={playlistId} />,
-            document.getElementById('root')
-        )
-    } else {
-        ReactDOM.render(
-            <NeteaseLogin />,
-            document.getElementById('root')
-        )
+        if (cookie) {
+            ReactDOM.render(
+                <Room playlistId={playlistId} />,
+                document.getElementById('root')
+            )
+        } else {
+            ReactDOM.render(
+                <NeteaseLogin />,
+                document.getElementById('root')
+            )
+        }
     }
 })

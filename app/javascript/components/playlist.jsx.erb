@@ -12,23 +12,32 @@ class Item extends React.Component {
             id: props.id,
             cover: props.cover,
             name: props.name,
-            url: `<%= url_for(rooms_path) %>/${props.id}`
         }
     }
 
-    handleClick(event) {
-        const href = $(event.currentTarget).data('href')
-        window.location = href
+    async handleClick(event) {
+        const id = $(event.currentTarget).data('id')
+        const csrf = document.querySelector("meta[name='csrf-token']").getAttribute("content")
+
+        let res = await fetch('<%=url_for rooms_path %>', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8',
+                'X-CSRF-Token': csrf
+            },
+            body: JSON.stringify({ room: { playlist_id: id } })
+        })
+        window.location = res.url
     }
 
     render() {
-        const { url, cover, name } = this.state
+        const { id, cover, name } = this.state
 
         return (
             <div
+                data-id={id}
                 className="card"
                 data-clickable="true"
-                data-href={url}
                 onClick={this.handleClick}
                 style={{cursor: 'pointer'}}
             >
@@ -59,12 +68,19 @@ export default class Playlist extends React.Component {
     }
 
     async componentDidMount() {
+        this.mounted = true
         const { id, api } = this.state
         const data = await api.getPlaylists(id)
-        this.setState({
-            playlists: data.playlist,
-            isLoading: false
-        })
+        if (this.mounted) {
+            this.setState({
+                playlists: data.playlist,
+                isLoading: false
+            })
+        }
+    }
+
+    componentWillUnmount() {
+        this.mounted = false
     }
 
     render() {

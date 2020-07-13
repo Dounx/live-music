@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
     return if login?
 
     store_location
-    flash[:danger] = '请登录'
+    flash[:error] = '请登录'
     redirect_to new_sessions_url
   end
 end

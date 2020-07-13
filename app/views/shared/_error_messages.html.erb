@@ -1,7 +1,7 @@
 <% if object.errors.any? %>
   <div id="error_explanation">
     <div class="alert alert-danger">
-      表格中有 <%= pluralize(object.errors.count, 'error') %>
+      表单中有 <%= pluralize(object.errors.count, 'error') %>
     </div>
     <ul>
       <% object.errors.full_messages.each do |msg| %>

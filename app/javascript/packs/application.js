@@ -19,3 +19,7 @@ import 'styles/application'
 
 import 'jquery'
 import 'bootstrap'
+
+import '../js/header'
+import '../js/rooms-index'
+import '../js/rooms-show'

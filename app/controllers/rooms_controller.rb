@@ -2,9 +2,29 @@ class RoomsController < ApplicationController
   before_action :logged_in_user
 
   def show
-    playlist_id = params[:id].to_i
-    @room = current_user.rooms.find_or_create_by(playlist_id: playlist_id)
+    @room = current_user.rooms.find(params[:id])
+  end
+
+  def new
+    @room = Room.new
+  end
+
+  def create
+    room = current_user.rooms.find_or_initialize_by(room_params)
+
+    if room.save
+      flash[:success] = '房间已创建！'
+      redirect_to room
+    else
+      render 'new'
+    end
   end
 
   def index; end
+
+  private
+
+  def room_params
+    params.require(:room).permit(:playlist_id)
+  end
 end

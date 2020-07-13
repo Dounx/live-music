@@ -1,27 +1,32 @@
+<% register = local_assigns[:register] %>
+
 <div class="wrapper fadeInDown">
   <div id="formContent">
     <div>
-      <h2>注册</h2>
+      <h2><%= register ? '注册' : '编辑' %></h2>
     </div>
 
     <%= form_for(@user) do |f| %>
       <%= render 'shared/error_messages', object: f.object %>
 
-      <%= f.text_field :name, autofocus: true, autocomplete: 'username', placeholder: '用户名', class: 'styled-input' %>
-
-      <%= text_field :activation, :token, placeholder: '激活码', class: 'styled-input' %>
+      <% if register %>
+        <%= f.text_field :name, autofocus: true, autocomplete: 'username', placeholder: '用户名', class: 'styled-input' %>
+        <%= text_field :activation, :token, autocomplete: 'token', placeholder: '激活码', class: 'styled-input' %>
+      <% end %>
 
       <%= f.password_field :password, autocomplete: 'new-password', placeholder: '密码', class: 'styled-input' %>
 
       <%= f.password_field :password_confirmation, autocomplete: 'new-password', placeholder: '确认密码', class: 'styled-input' %>
 
       <div class="actions">
-        <%= f.submit '注册' %>
+        <%= f.submit register ? '注册' : '更新' %>
       </div>
     <% end %>
 
-    <div id="formFooter">
-      <p>已有帐号？<%= link_to '现在登陆', new_sessions_path %>
-    </div>
+    <% if register %>
+      <div id="formFooter">
+        <p>已有帐号？<%= link_to '现在登陆', new_sessions_path %>
+      </div>
+    <% end %>
   </div>
 </div>

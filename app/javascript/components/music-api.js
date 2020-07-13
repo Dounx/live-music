@@ -14,9 +14,7 @@ export default class MusicApi {
             },
             body: JSON.stringify({ phone: phone, password: password })
         })
-        let data = await res.json()
-
-        return data
+        return await res.json()
     }
 
     async loginByEmail(email, password) {
@@ -27,9 +25,7 @@ export default class MusicApi {
             },
             body: JSON.stringify({ email: email, password: password })
         })
-        let data = await res.json()
-
-        return data
+        return await res.json()
     }
 
     async getPlaylists() {
@@ -38,9 +34,7 @@ export default class MusicApi {
         }
 
         let res = await fetch(`${this.HOST}/user/playlist?uid=${this.id}&cookie=${this.cookie}`)
-        let data = await res.json()
-
-        return data
+        return await res.json()
     }
 
     async getPlaylist(playlistId) {
@@ -70,12 +64,10 @@ export default class MusicApi {
         let res = await fetch(`${this.HOST}/song/url?id=${songId}`)
         let data = await res.json()
 
-        let songs = data.data.reduce((map, song) => {
+        return data.data.reduce((map, song) => {
             map[song.id] = song
             return map
         }, {})
-
-        return songs
     }
 
     async _getLrc(songId) {
