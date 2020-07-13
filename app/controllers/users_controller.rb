@@ -33,6 +33,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     if @user.update(user_params)
       flash[:success] = '更新成功'
+      redirect_to rooms_path
     else
       render 'edit'
     end
