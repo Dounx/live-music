@@ -36,7 +36,7 @@ class Room extends React.Component {
 
     render() {
         return (
-            <Player audio={this.state.playlist.tracks} />
+            <Player audio={this.state.playlist.tracks}/>
         )
     }
 }
