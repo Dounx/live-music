@@ -1,48 +1,31 @@
 import consumer from './consumer'
 import flash from '../components/flash'
 
-export default function createRoomsChannel(player) {
-  const roomId = parseInt(document.getElementById("room-id").getAttribute("value"))
-  const isOwner = (document.getElementById("is-owner").getAttribute("value") === "true")
-  const channelMixin = {
-    initialized() {
-      this.sync = this.sync.bind(this)
-    },
+export default class RoomChannel {
+  constructor(id) {
+    const channelMixin = {
+      initialized() {
+      },
 
-    received(data) {
-      data = JSON.parse(data)
-      switch (data["action"]) {
-        case "sync":
-          if (isOwner) {
-            break
-          }
+      connected() {
+        flash('notice', '已加入频道')
+        setInterval(this.sync, 1000)
+      },
 
-          if (getCurrentIndex() !== data["index"]) {
-            player.list.switch(data["index"])
-          }
+      disconnected() {
+        flash('notice', '已退出频道')
+      },
 
-          if (player.audio.paused !== data["paused"]) {
-            if (data["paused"] === true) {
-              player.pause()
-            } else {
-              player.play()
-            }
-          }
-
-          let time = getCurrentTime()
-          if (Math.abs(time - data["time"]) > 3) {
-            player.seek(data["time"])
-          }
-
-          break;
-        case "notice":
-          flash("notice", data["msg"], 3000)
-          setUserCounter(data["user_counter"])
-          break
-        default:
-          console.log(data)
+      received(data) {
+        data = JSON.parse(data)
+        console.log(data)
       }
     }
+
+    this.channel = consumer.subscriptions.create({channel: "RoomsChannel", id: id}, channelMixin)
   }
-  consumer.subscriptions.create({channel: "RoomsChannel", id: roomId}, channelMixin)
+
+  send(...args) {
+    this.channel.send(...args)
+  }
 }

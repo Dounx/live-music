@@ -41,12 +41,12 @@ class Message < ApplicationRecord
   end
 
   def broadcast
-    channel.broadcast_to(to, data.merge(action: action))
+    channel.broadcast_to(to, self)
   end
 
   private
 
   def deliver
-    MessageJob.perform_now(self)
+    MessageJob.perform_later(self)
   end
 end

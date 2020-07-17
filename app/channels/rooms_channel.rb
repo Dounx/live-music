@@ -4,17 +4,15 @@ class RoomsChannel < ApplicationCable::Channel
   def subscribed
     @room = Room.find(params[:id])
     stream_for @room
-    notice('已加入')
   end
 
-  def unsubscribed
-    notice('已退出')
-  end
+  def unsubscribed; end
 
-  def sync(action, data)
+  def sync(data)
     return unless @room.user == current_user
 
-    create_rooms_message(action, data)
+    p data
+    # create_rooms_message(data)
   end
 
   private

@@ -6,7 +6,8 @@ export default class Player extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            isLoading: true
+            isLoading: true,
+            channel: this.props.channel
         }
     }
 
