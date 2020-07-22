@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 class Message < ApplicationRecord
-  after_save :deliver
+  # after_commit :deliver
+  after_commit :broadcast
 
   class << self
     def build(attributes = nil)
@@ -19,7 +20,7 @@ class Message < ApplicationRecord
         from_id: attributes[:from]&.id,
         to_class: attributes[:to]&.class&.name,
         to_id: attributes[:to]&.id,
-        data: attributes[:data]
+        data: attributes[:data].to_json
       }
     end
   end

@@ -30,7 +30,7 @@ class Room extends React.Component {
                 playlist: playlist
             })
         }
-        channel.send({action: 'sync', data: 'hello'})
+        channel.broadcast('ping', 'hello')
     }
 
     componentWillUnmount() {

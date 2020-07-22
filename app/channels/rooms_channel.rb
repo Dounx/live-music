@@ -8,11 +8,13 @@ class RoomsChannel < ApplicationCable::Channel
 
   def unsubscribed; end
 
-  def sync(data)
+  def broadcast(data)
     return unless @room.user == current_user
 
-    p data
-    # create_rooms_message(data)
+    action = data['action']
+    data.delete('action')
+
+    create_rooms_message(action, data)
   end
 
   private

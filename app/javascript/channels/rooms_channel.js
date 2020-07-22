@@ -9,15 +9,15 @@ export default class RoomChannel {
 
       connected() {
         flash('notice', '已加入频道')
-        setInterval(this.sync, 1000)
       },
 
       disconnected() {
         flash('notice', '已退出频道')
       },
 
-      received(data) {
-        data = JSON.parse(data)
+      received(message) {
+        console.log(message)
+        let data = JSON.parse(message.data)
         console.log(data)
       }
     }
@@ -25,7 +25,11 @@ export default class RoomChannel {
     this.channel = consumer.subscriptions.create({channel: "RoomsChannel", id: id}, channelMixin)
   }
 
-  send(...args) {
-    this.channel.send(...args)
+  perform(...args) {
+    this.channel.perform(...args)
+  }
+
+  broadcast(type, data = null) {
+    this.channel.perform('broadcast', {type: type, data: data})
   }
 }

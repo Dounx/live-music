@@ -34,19 +34,21 @@ export default class Player extends React.Component {
     }
 
     onPlay = () => {
-        console.log('on play')
+        this.state.channel.broadcast('play')
     }
 
     onPause = () => {
-        console.log('on pause')
+        this.state.channel.broadcast('pause')
     }
 
     onSeeked = () => {
-        console.log('on seeked')
+        let time = this.ap.audio.currentTime
+        this.state.channel.broadcast('seek', time)
     }
 
     onVolumechange = () => {
-        console.log('on volumechange')
+        let volume = this.ap.audio.volume
+        this.state.channel.broadcast('volume', volume)
     }
 
     render() {
