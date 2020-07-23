@@ -3,6 +3,8 @@
 class User < ApplicationRecord
   has_many :rooms, dependent: :destroy
 
+  validates :name, allow_blank: false, uniqueness: true
+
   has_secure_password
   has_secure_password :remember, validations: false
 

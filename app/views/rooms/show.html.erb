@@ -1,4 +1,6 @@
 <%= content_tag :div, nil, id: 'playlist-id', value: @room.playlist_id %>
 <div id="room-id" value="<%= @room.id %>"></div>
 <div id="is-owner" value=<%= @room.user == current_user %>></div>
+<div id="room-token" value=<%= @room.token %>></div>
+
 <div id="rooms-show"></div>

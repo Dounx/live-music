@@ -24,6 +24,12 @@ class RoomsController < ApplicationController
 
   def index; end
 
+  def join
+    @room = Room.find_by(token: params[:token])
+
+    render 'show' if @room
+  end
+
   private
 
   def room_params

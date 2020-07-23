@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import MusicAPI from '../components/music-api';
 import Player from '../components/player';
 import NeteaseLogin from '../components/netease-login';
+import flash from '../components/flash';
 
 class Room extends React.Component {
   constructor(props) {
@@ -59,6 +60,9 @@ document.addEventListener('turbolinks:load', () => {
         document.getElementById('room-id').getAttribute('value'));
     const isOwner = document.getElementById('is-owner').
         getAttribute('value') === 'true';
+
+    const token = document.getElementById('room-token').getAttribute('value');
+    flash('notice', `Token: ${token}`);
 
     if (cookie) {
       ReactDOM.render(

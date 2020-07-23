@@ -4,9 +4,12 @@ require 'sidekiq/web'
 require 'admin_constraint'
 
 Rails.application.routes.draw do
-  resources :rooms
+  resources :rooms, except: %i[edit update destroy] do
+    get 'join', on: :collection
+  end
+
   resources :users
-  resource :sessions
+  resource :sessions, only: %i[new create destroy]
 
   mount Sidekiq::Web => '/sidekiq', :constraints => AdminConstraint.new
 

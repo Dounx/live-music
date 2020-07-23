@@ -10,7 +10,3 @@ user = User.new(name: 'admin')
 user.password = 'nimda'
 user.password_confirmation = 'nimda'
 user.save
-
-100.times do
-  Activation.create
-end
