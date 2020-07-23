@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
 class Message < ApplicationRecord
-  # after_commit :deliver
-  after_commit :broadcast
+  after_commit :deliver
 
   class << self
     def build(attributes = nil)
