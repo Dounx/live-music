@@ -8,7 +8,7 @@ Rails.application.routes.draw do
     get 'join', on: :collection
   end
 
-  resources :users
+  resources :users, except: %i[destroy]
   resource :sessions, only: %i[new create destroy]
 
   mount Sidekiq::Web => '/sidekiq', :constraints => AdminConstraint.new
