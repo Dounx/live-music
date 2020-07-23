@@ -1,13 +1,15 @@
 import React from 'react'
 import Aplayer from 'react-aplayer'
 import Spinner from '../components/spinner'
+import RoomChannel from "../channels/rooms_channel";
 
 export default class Player extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
             isLoading: true,
-            channel: this.props.channel
+            roomId: this.props.roomId,
+            isOwner: this.props.isOwner
         }
     }
 
@@ -29,8 +31,19 @@ export default class Player extends React.Component {
         }
     }
 
+    getCurrentIndex() {
+        return this.ap.list.index
+    }
+
+    getCurrentId() {
+        let index = this.getCurrentIndex()
+        return this.ap.list.audios[index]["id"]
+    }
+
     onInit = ap => {
         this.ap = ap
+        const { roomId, isOwner } = this.state
+        this.state.channel = new RoomChannel(roomId, isOwner, ap)
     }
 
     onPlay = () => {
@@ -41,14 +54,13 @@ export default class Player extends React.Component {
         this.state.channel.broadcast('pause')
     }
 
-    onSeeked = () => {
-        let time = this.ap.audio.currentTime
-        this.state.channel.broadcast('seek', time)
+    onLoadstart = () => {
+        this.state.channel.broadcast('loaded', this.getCurrentId())
     }
 
-    onVolumechange = () => {
-        let volume = this.ap.audio.volume
-        this.state.channel.broadcast('volume', volume)
+    onSeeked = () => {
+        let time = this.ap.audio.currentTime
+        this.state.channel.broadcast('seeked', time)
     }
 
     render() {
@@ -61,14 +73,21 @@ export default class Player extends React.Component {
         return (
             <div>
                 { this.state.isLoading ? <Spinner /> : null }
-                <Aplayer
-                    {...props}
-                    onInit={this.onInit}
-                    onPlay={this.onPlay}
-                    onPause={this.onPause}
-                    onSeeked={this.onSeeked}
-                    onVolumechange={this.onVolumechange}
-                />
+                {
+                    this.state.isOwner ?
+                      <Aplayer
+                        {...props}
+                        onInit={this.onInit}
+                        onPlay={this.onPlay}
+                        onPause={this.onPause}
+                        onLoadstart={this.onLoadstart}
+                        onSeeked={this.onSeeked}
+                      /> :
+                      <Aplayer
+                        {...props}
+                        onInit={this.onInit}
+                      />
+                }
             </div>
         )
     }

@@ -4,9 +4,12 @@ class RoomsChannel < ApplicationCable::Channel
   def subscribed
     @room = Room.find(params[:id])
     stream_for @room
+    notice('已加入')
   end
 
-  def unsubscribed; end
+  def unsubscribed
+    notice('已退出')
+  end
 
   def broadcast(data)
     return unless @room.user == current_user
@@ -30,7 +33,10 @@ class RoomsChannel < ApplicationCable::Channel
   end
 
   def notice(content)
-    data = "#{current_user.name} #{content}"
-    create_rooms_message('notice', data)
+    data = {
+      type: 'notice',
+      data: "#{current_user.name} #{content}"
+    }
+    create_rooms_message('broadcast', data)
   end
 end

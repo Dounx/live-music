@@ -1,5 +1,5 @@
 export default class MusicApi {
-    HOST = 'http://127.0.0.1:4000'
+    HOST = 'http://127.0.0.1:18685'
 
     constructor(id = null, cookie = null) {
         this.id = id

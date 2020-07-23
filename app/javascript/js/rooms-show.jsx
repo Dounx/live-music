@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom'
 import MusicAPI from '../components/music-api'
 import Player from '../components/player'
 import NeteaseLogin from '../components/netease-login'
-import RoomChannel from '../channels/rooms_channel'
 
 class Room extends React.Component {
     constructor(props) {
@@ -12,12 +11,13 @@ class Room extends React.Component {
         const { id, cookie } = localStorage
 
         this.state = {
+            roomId: this.props.roomId,
             playlistId: this.props.playlistId,
+            isOwner: this.props.isOwner,
             api: new MusicAPI(id, cookie),
             playlist: {
                 tracks: []
-            },
-            channel: new RoomChannel(this.props.roomId)
+            }
         }
     }
 
@@ -30,7 +30,6 @@ class Room extends React.Component {
                 playlist: playlist
             })
         }
-        channel.broadcast('ping', 'hello')
     }
 
     componentWillUnmount() {
@@ -38,8 +37,15 @@ class Room extends React.Component {
     }
 
     render() {
+        const audio = this.state.playlist.tracks
+        const { isOwner, roomId } = this.state
+
         return (
-            <Player audio={this.state.playlist.tracks} channel={this.state.channel} />
+            <Player
+              audio={audio}
+              isOwner={isOwner}
+              roomId={roomId}
+            />
         )
     }
 }
@@ -50,10 +56,15 @@ document.addEventListener('turbolinks:load', () => {
         const playlistId = node.getAttribute('value')
         const cookie = localStorage.getItem('cookie')
         const roomId = parseInt(document.getElementById("room-id").getAttribute("value"))
+        const isOwner = document.getElementById("is-owner").getAttribute("value") === 'true'
 
         if (cookie) {
             ReactDOM.render(
-                <Room playlistId={playlistId} roomId={roomId} />,
+                <Room
+                  playlistId={playlistId}
+                  roomId={roomId}
+                  isOwner={isOwner}
+                />,
                 document.getElementById('root')
             )
         } else {
