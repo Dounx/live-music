@@ -1,106 +1,106 @@
-import React from 'react'
-import MusicApi from './music-api'
-import Spinner from './spinner'
+import React from 'react';
+import MusicApi from './music-api';
+import Spinner from './spinner';
 
 <% include Rails.application.routes.url_helpers %>
 
 class Item extends React.Component {
-    constructor(props) {
-        super(props)
+  constructor(props) {
+    super(props);
 
-        this.state = {
-            id: props.id,
-            cover: props.cover,
-            name: props.name,
-        }
-    }
+    this.state = {
+      id: props.id,
+      cover: props.cover,
+      name: props.name,
+    };
+  }
 
-    async handleClick(event) {
-        const id = $(event.currentTarget).data('id')
-        const csrf = document.querySelector("meta[name='csrf-token']").getAttribute("content")
+  async handleClick(event) {
+    const id = $(event.currentTarget).data('id');
+    const csrf = document.querySelector('meta[name=\'csrf-token\']').getAttribute('content');
 
-        let res = await fetch('<%=url_for rooms_path %>', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json;charset=utf-8',
-                'X-CSRF-Token': csrf
-            },
-            body: JSON.stringify({ room: { playlist_id: id } })
-        })
-        window.location = res.url
-    }
+    let res = await fetch('<%=url_for rooms_path %>', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+        'X-CSRF-Token': csrf,
+      },
+      body: JSON.stringify({room: {playlist_id: id}}),
+    });
+    window.location = res.url;
+  }
 
-    render() {
-        const { id, cover, name } = this.state
+  render() {
+    const {id, cover, name} = this.state;
 
-        return (
-            <div
-                data-id={id}
-                className="card"
-                data-clickable="true"
-                onClick={this.handleClick}
-                style={{cursor: 'pointer'}}
-            >
+    return (
+        <div
+            data-id={id}
+            className="card"
+            data-clickable="true"
+            onClick={this.handleClick}
+            style={{cursor: 'pointer'}}
+        >
 
-                <img className="card-img-top"
-                     src={cover}
-                     alt="Card image cap"
-                />
-                <div className="card-body">
-                    <h5 className="card-title">{name}</h5>
-                </div>
-            </div>
-        )
-    }
+          <img className="card-img-top"
+               src={cover}
+               alt="Card image cap"
+          />
+          <div className="card-body">
+            <h5 className="card-title">{name}</h5>
+          </div>
+        </div>
+    );
+  }
 }
 
 export default class Playlist extends React.Component {
-    constructor(props) {
-        super(props)
+  constructor(props) {
+    super(props);
 
-        this.state = {
-            id: props.id,
-            cookie: props.cookie,
-            api: new MusicApi(props.id, props.cookie),
-            playlists: [],
-            isLoading: true
-        }
+    this.state = {
+      id: props.id,
+      cookie: props.cookie,
+      api: new MusicApi(props.id, props.cookie),
+      playlists: [],
+      isLoading: true,
+    };
+  }
+
+  async componentDidMount() {
+    this.mounted = true;
+    const {id, api} = this.state;
+    const data = await api.getPlaylists(id);
+    if (this.mounted) {
+      this.setState({
+        playlists: data.playlist,
+        isLoading: false,
+      });
     }
+  }
 
-    async componentDidMount() {
-        this.mounted = true
-        const { id, api } = this.state
-        const data = await api.getPlaylists(id)
-        if (this.mounted) {
-            this.setState({
-                playlists: data.playlist,
-                isLoading: false
-            })
-        }
-    }
+  componentWillUnmount() {
+    this.mounted = false;
+  }
 
-    componentWillUnmount() {
-        this.mounted = false
-    }
+  render() {
+    const playlists = this.state.playlists.map((playlist) =>
+        <Item
+            key={playlist.id}
+            id={playlist.id}
+            name={playlist.name}
+            cover={playlist.coverImgUrl}
+        />,
+    );
 
-    render() {
-        const playlists = this.state.playlists.map((playlist) =>
-            <Item
-                key={playlist.id}
-                id={playlist.id}
-                name={playlist.name}
-                cover={playlist.coverImgUrl}
-            />
-        )
-
-        return (
-            <div>
-                { this.state.isLoading ? <Spinner /> : null }
-                <div className="card-deck">
-                    {playlists}
-                </div>
-            </div>
-        )
-    }
+    return (
+        <div>
+          {this.state.isLoading ? <Spinner/> : null}
+          <div className="card-deck">
+            {playlists}
+          </div>
+        </div>
+    );
+  }
 }
 
