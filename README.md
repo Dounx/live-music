@@ -31,6 +31,7 @@ bundle exec sidekiq
 # Session 4
 git clone https://github.com/Binaryify/NeteaseCloudMusicApi.git
 cd NeteaseCloudMusicApi
+npm install
 PORT=18685 node app.js
 ```
 
@@ -50,6 +51,7 @@ rails console
 ```
 git clone https://github.com/Binaryify/NeteaseCloudMusicApi.git
 cd NeteaseCloudMusicApi
+npm install
 PORT=18685 node app.js
 ```
 
