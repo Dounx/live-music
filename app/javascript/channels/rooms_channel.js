@@ -17,34 +17,50 @@ export default class RoomChannel {
         {channel: 'RoomsChannel', id: id}, channelMixin);
   }
 
+  perform(...args) {
+    this.channel.perform(...args);
+  }
+
   broadcast(type, data = null) {
     this.channel.perform('broadcast', {type: type, data: data});
   }
 
   received(message) {
-    if (needSync) {
-      const response = JSON.parse(message.data);
-      const {type, data} = response;
-      console.log(response);
+    const response = JSON.parse(message.data);
+    const {type, data} = response;
+    console.log(response);
 
+    if (needSync) {
       switch (type) {
-        case 'play':
-          player.play();
-          break;
-        case 'pause':
-          player.pause();
-          break;
-        case 'loaded':
-          player.list.switch(data);
-          break;
-        case 'seeked':
-          player.seek(data);
-          break;
         case 'notice':
           flash('notice', data);
           break;
+        case 'sync':
+          if (player.list.index !== data.index) {
+            player.list.switch(data.index);
+          }
+
+          if (Math.abs(player.audio.currentTime - data.time) > 3 ) {
+            player.seek(data.time);
+          }
+
+          if (data.play) {
+            player.play();
+          } else {
+            player.pause();
+          }
+
+          break;
         default:
-          console.log(`Unsupported type: ${type}, data: ${data}`);
+          console.log(`Useless type: ${type}, data: ${data}`);
+      }
+    } else {
+        switch (type) {
+          case 'notice':
+            flash('notice', data);
+            break;
+          default:
+            console.log(`Useless type: ${type}, data: ${data}`);
       }
     }
   }

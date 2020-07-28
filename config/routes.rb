@@ -8,6 +8,8 @@ Rails.application.routes.draw do
     get 'join', on: :collection
   end
 
+  resource :messages, only: %i[create]
+
   resources :users, except: %i[destroy]
   resource :sessions, only: %i[new create destroy]
 

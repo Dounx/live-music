@@ -20,4 +20,8 @@ class User < ApplicationRecord
   def forget
     update(remember: nil)
   end
+
+  def messages
+    Message.where('to_class = ? AND to_id = ?', self.class.name, id)
+  end
 end

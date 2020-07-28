@@ -14,7 +14,6 @@ class Message < ApplicationRecord
     def format(attributes)
       {
         action: attributes[:action],
-        channel_class: attributes[:channel]&.name,
         from_class: attributes[:from]&.class&.name,
         from_id: attributes[:from]&.id,
         to_class: attributes[:to]&.class&.name,
@@ -36,15 +35,15 @@ class Message < ApplicationRecord
     end
   end
 
-  def channel
-    channel_class.constantize
-  end
-
   def broadcast
     channel.broadcast_to(to, self)
   end
 
-  private
+  def channel
+    klass = self.class.name
+    type = klass.delete('Message')
+    "#{type}sChannel".constantize
+  end
 
   def deliver
     MessageJob.perform_later(self)

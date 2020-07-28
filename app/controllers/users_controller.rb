@@ -16,7 +16,7 @@ class UsersController < ApplicationController
     token = params[:activation][:token]
     activation = Activation.find_by(token: token)
 
-    if activation&.use
+    if activation&.use && @user.save
       flash[:success] = '注册成功'
       redirect_to new_sessions_url
     else

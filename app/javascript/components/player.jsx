@@ -35,36 +35,28 @@ export default class Player extends React.Component {
     return this.ap.list.index;
   }
 
-  getCurrentId() {
-    let index = this.getCurrentIndex();
-    return this.ap.list.audios[index]['id'];
+  sync() {
+    const data = {
+      play: !this.ap.audio.paused,
+      time: this.ap.audio.currentTime,
+      index: this.getCurrentIndex()
+    };
+    this.state.channel.broadcast('sync', data);
   }
 
   onInit = ap => {
     this.ap = ap;
     const {roomId, isOwner} = this.state;
     this.state.channel = new RoomChannel(roomId, isOwner, ap);
-  };
 
-  onPlay = () => {
-    this.state.channel.broadcast('play');
-  };
-
-  onPause = () => {
-    this.state.channel.broadcast('pause');
-  };
-
-  onLoadstart = () => {
-    this.state.channel.broadcast('loaded', this.getCurrentId());
-  };
-
-  onSeeked = () => {
-    let time = this.ap.audio.currentTime;
-    this.state.channel.broadcast('seeked', time);
+    if (this.state.isOwner) {
+      setInterval(this.sync.bind(this), 1000);
+    }
   };
 
   render() {
     const props = {
+      autoPlay: true,
       listFolded: false,
       listMaxHeight: '90',
       audio: this.props.audio,
@@ -73,21 +65,10 @@ export default class Player extends React.Component {
     return (
         <div>
           {this.state.isLoading ? <Spinner/> : null}
-          {
-            this.state.isOwner ?
-                <Aplayer
-                    {...props}
-                    onInit={this.onInit}
-                    onPlay={this.onPlay}
-                    onPause={this.onPause}
-                    onLoadstart={this.onLoadstart}
-                    onSeeked={this.onSeeked}
-                /> :
-                <Aplayer
-                    {...props}
-                    onInit={this.onInit}
-                />
-          }
+          <Aplayer
+              {...props}
+              onInit={this.onInit}
+          />
         </div>
     );
   }
