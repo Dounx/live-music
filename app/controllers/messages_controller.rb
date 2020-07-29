@@ -1,5 +1,5 @@
 class MessagesController < ApplicationController
-  include RoomMessage
+  include RoomMessageUtils
 
   def create
     content = params[:content]
