@@ -1,7 +1,33 @@
 # frozen_string_literal: true
 
-class Message < ApplicationRecord
-  after_commit :deliver
+class Message
+  include ActiveModel::Serializers::JSON
+
+  attr_accessor :action,
+                :from_class,
+                :from_id,
+                :to_class,
+                :to_id,
+                :data
+
+  def initialize(attributes = {})
+    @action = attributes[:action]
+    @from_class = attributes[:from_class]
+    @from_id = attributes[:from_id]
+    @to_class = attributes[:to_class]
+    @to_id = attributes[:to_id]
+    @data = attributes[:data]
+  end
+
+  def attributes=(hash)
+    hash.each do |key, value|
+      send("#{key}=", value)
+    end
+  end
+
+  def attributes
+    instance_values
+  end
 
   class << self
     def build(attributes = nil)
@@ -30,7 +56,10 @@ class Message < ApplicationRecord
   # Same as #to method
   %i[from to].each do |name|
     define_method(name) do
-      klass = public_send("#{name}_class").constantize
+      klass = instance_variable_get("@#{name}_class")&.constantize
+
+      return nil unless klass
+
       klass.find_by(id: public_send("#{name}_id"))
     end
   end
@@ -40,12 +69,12 @@ class Message < ApplicationRecord
   end
 
   def channel
-    klass = self.class.name
-    type = klass.delete('Message')
-    "#{type}sChannel".constantize
+    return nil unless @to_class
+
+    "#{@to_class}sChannel".constantize
   end
 
   def deliver
-    MessageJob.perform_later(self)
+    MessageJob.perform_later(to_json)
   end
 end

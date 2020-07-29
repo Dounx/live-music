@@ -2,12 +2,12 @@
 
 module RoomMessageUtils
   def create_rooms_message(action, data)
-    RoomMessage.build(
+    Message.build(
       action: action,
       data: data,
       from: current_user,
       to: @room
-    ).save
+    ).deliver
   end
 
   def notice(content)
