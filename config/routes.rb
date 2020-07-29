@@ -10,7 +10,7 @@ Rails.application.routes.draw do
 
   resource :messages, only: %i[create]
 
-  resources :users, except: %i[destroy]
+  resources :users, except: %i[index, destroy]
   resource :sessions, only: %i[new create destroy]
 
   mount Sidekiq::Web => '/sidekiq', :constraints => AdminConstraint.new
