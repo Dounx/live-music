@@ -59,6 +59,8 @@ export default class RoomChannel {
           case 'notice':
             flash('notice', data);
             break;
+          case 'sync':
+            break;
           default:
             console.log(`Useless type: ${type}, data: ${data}`);
       }
