@@ -36,10 +36,6 @@ PORT=18685 node app.js
 
 账号注册的时候需要使用邀请码，可以通过在后台生成。
 
-```bash
-RAILS_ENV=production rails console
-```
-
 ```ruby
 10.times { Activation.create }
 ```
@@ -89,13 +85,11 @@ sudo service redis start
 ```
 
 设置 Nginx：
-
 ```bash
 sudo vim /etc/nginx/nginx.conf
 ```
 
 修改文件中的 user 为 app：
-
 ```
 user app;
 ```
@@ -105,7 +99,6 @@ sudo vim /etc/nginx/sites-available/default
 ```
 
 修改为：
-
 ```
 upstream app {
     # Path to Puma SOCK file, as defined previously
@@ -120,10 +113,15 @@ server {
 
     try_files $uri/index.html $uri @app;
 
+    location /api/ {
+        proxy_pass http://localhost:18685/;
+    }
+
     location @app {
         proxy_pass http://app;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header Host $http_host;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header Host $host;
         proxy_redirect off;
     }
 
@@ -132,6 +130,10 @@ server {
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection "Upgrade";
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $http_host;
+        proxy_redirect off;
+        proxy_set_header X-Forwarded-Proto $scheme;
     }
 
     error_page 500 502 503 504 /500.html;
@@ -214,7 +216,10 @@ Session 2：
 tmux new -s job
 
 cd live-music
+
 export RAILS_ENV=production
+export LIVE_MUSIC_DATABASE_PASSWORD=yourpassword
+
 bundle exec sidekiq
 
 # Ctrl + b 然后按下 d 分离
@@ -251,8 +256,10 @@ rails c
 tmux attach -t session_name
 ```
 
-如果想全站使用 HTTPS（建议）：
+全站使用 HTTPS（建议）：
 ```bash
 sudo apt install -y certbot python-certbot-nginx
 sudo certbot --nginx
 ```
+
+选择的时候记得选 No redirect。
