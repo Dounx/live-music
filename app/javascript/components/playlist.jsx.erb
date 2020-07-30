@@ -36,10 +36,10 @@ class Item extends React.Component {
     return (
         <div
             data-id={id}
-            className="card"
+            className="card mt-4"
             data-clickable="true"
             onClick={this.handleClick}
-            style={{cursor: 'pointer'}}
+            style={{cursor: 'pointer', 'max-width': '16rem', 'min-width': '16rem'}}
         >
 
           <img className="card-img-top"
@@ -96,7 +96,7 @@ export default class Playlist extends React.Component {
     return (
         <div>
           {this.state.isLoading ? <Spinner/> : null}
-          <div className="card-deck">
+          <div className="card-deck justify-content-center">
             {playlists}
           </div>
         </div>
