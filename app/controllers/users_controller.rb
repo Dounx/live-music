@@ -13,14 +13,12 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
-    token = params[:activation][:token]
-    activation = Activation.find_by(token: token)
 
-    if activation&.use && @user.save
+    if @user.save
       flash[:success] = '注册成功'
       redirect_to new_sessions_url
     else
-      flash[:error] = '激活码错误'
+      flash[:error] = '注册失败'
       render 'new'
     end
   end

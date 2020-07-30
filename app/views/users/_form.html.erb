@@ -11,7 +11,6 @@
 
       <% if register %>
         <%= f.text_field :name, autofocus: true, autocomplete: 'username', placeholder: '用户名', class: 'styled-input' %>
-        <%= text_field :activation, :token, autocomplete: 'token', placeholder: '激活码', class: 'styled-input' %>
       <% end %>
 
       <%= f.password_field :password, autocomplete: 'new-password', placeholder: '密码', class: 'styled-input' %>
