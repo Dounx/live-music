@@ -35,6 +35,7 @@ export default class MusicApi {
 
     let res = await fetch(
         `${this.HOST}/user/playlist?uid=${this.id}&cookie=${this.cookie}`);
+
     return await res.json();
   }
 
@@ -52,6 +53,11 @@ export default class MusicApi {
 
     for (let track of playlist.tracks) {
       track.url = songs[track.id].url;
+
+      <% if Rails.env.production? %>
+        track.url.replace('http', 'https');
+      <% end %>
+
       // Due to some unknown bug.
       // Load lrc can lead to send a GET request then failed.
       // Also it's too slow.
