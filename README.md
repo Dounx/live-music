@@ -46,7 +46,7 @@ PORT=18685 node app.js
 
 首先在 root 用户下：
 
-安装 Nodejs：
+安装 Node.js：
 ```bash
 curl -sL https://deb.nodesource.com/setup_lts.x | bash -
 apt-get install -y nodejs
