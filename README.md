@@ -32,14 +32,6 @@ npm install
 PORT=18685 node app.js
 ```
 
-### 注意事项
-
-账号注册的时候需要使用邀请码，可以通过在后台生成。
-
-```ruby
-10.times { Activation.create }
-```
-
 ### 部署
 
 只在 Debian 10 环境下测试过。
