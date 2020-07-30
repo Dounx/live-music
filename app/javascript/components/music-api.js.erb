@@ -1,5 +1,5 @@
 export default class MusicApi {
-  HOST = `${location.protocol}//${location.hostname}:18685`;
+  HOST = `${location.protocol}//${location.hostname}<%= Rails.env.production? ? '/api' : ':18685' %>`;
 
   constructor(id = null, cookie = null) {
     this.id = id;
