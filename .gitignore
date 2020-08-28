@@ -35,5 +35,5 @@
 yarn-debug.log*
 .yarn-integrity
 
-.idea
-NeteaseCloudMusicApi/
+/.idea
+/NeteaseCloudMusicApi

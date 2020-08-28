@@ -1,0 +1,41 @@
+version: "3.8"
+
+services:
+  db:
+    container_name: live-musci-db
+    image: postgres
+
+  redis:
+    container_name: live-musci-redis
+    image: redis
+
+  app: &app_base
+    container_name: live-musci-app
+    build: .
+    volumes:
+      - .:/usr/src/live-music
+    command: bin/start
+
+  web:
+    <<: *app_base
+    container_name: live-musci-web
+    command: /etc/nginx/start
+    ports:
+      - "80:80"
+      - "443:443"
+
+  job:
+    <<: *app_base
+    container_name: live-musci-job
+    command: bundle exec sidekiq
+
+  api:
+    container_name: live-musci-api
+    image: node
+    environment:
+      - PORT=18685
+    command:
+      - git clone https://github.com/Binaryify/NeteaseCloudMusicApi.git
+      - node NeteaseCloudMusicApi/app.js
+    ports:
+      - "18685:18685"
