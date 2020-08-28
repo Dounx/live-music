@@ -17,23 +17,8 @@ Web 版网易云音乐同步听歌。
 ### 开发环境
 
 ```bash
-# Session 1
-bundle
-rails db:create
-rails db:migrate
-rails s
-
-# Session 2
-./bin/webpack-dev-server
-
-# Session 3
-bundle exec sidekiq
-
-# Session 4
-git clone https://github.com/Binaryify/NeteaseCloudMusicApi.git
-cd NeteaseCloudMusicApi
-npm install
-PORT=18685 node app.js
+bin/setup
+tmux -f dev.tmux.conf attach
 ```
 
 ### 部署
