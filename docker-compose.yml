@@ -36,6 +36,8 @@ services:
       - PORT=18685
     command:
       - git clone https://github.com/Binaryify/NeteaseCloudMusicApi.git
-      - node NeteaseCloudMusicApi/app.js
+      - cd NeteaseCloudMusicApi
+      - npm install
+      - node app.js
     ports:
       - "18685:18685"
