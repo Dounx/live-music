@@ -81,5 +81,5 @@ test:
 production:
   <<: *default
   database: live_music_production
-  username: live_music
-  password: <%= ENV['LIVE_MUSIC_DATABASE_PASSWORD'] %>
+  host: 'db'
+  user: 'postgres'

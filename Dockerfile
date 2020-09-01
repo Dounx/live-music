@@ -1,6 +1,7 @@
 FROM ruby:2.7.1
 
 ARG APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=true
+ARG SECRET_KEY_BASE=fake_secure_for_compile
 
 RUN gem install bundler
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
@@ -13,5 +14,4 @@ WORKDIR /usr/src/live-music
 COPY . .
 RUN bundle config set without 'development test' && \
     bundle install && \
-    yarn && \
     rails assets:precompile

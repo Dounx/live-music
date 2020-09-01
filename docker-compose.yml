@@ -2,35 +2,38 @@ version: "3.8"
 
 services:
   db:
-    container_name: live-musci-db
+    container_name: live-music-db
     image: postgres
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
 
   redis:
-    container_name: live-musci-redis
+    container_name: live-music-redis
     image: redis
 
   app: &app_base
-    container_name: live-musci-app
+    container_name: live-music-app
     build: .
     volumes:
       - .:/usr/src/live-music
     command: bin/start
 
-  web:
+  job:
     <<: *app_base
-    container_name: live-musci-web
-    command: /etc/nginx/start
+    container_name: live-music-job
+    command: bundle exec sidekiq
+
+  web:
+    container_name: live-music-web
+    image: nginx
+    volumes:
+      - .:/usr/src/live-music
     ports:
       - "80:80"
       - "443:443"
 
-  job:
-    <<: *app_base
-    container_name: live-musci-job
-    command: bundle exec sidekiq
-
   api:
-    container_name: live-musci-api
+    container_name: live-music-api
     image: node
     environment:
       - PORT=18685
