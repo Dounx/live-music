@@ -25,7 +25,7 @@ tmux -f dev.tmux.conf attach
 ### 部署
 
 ```bash
-git clone https://github.com/Dounx/live-music
+git clone https://github.com/Dounx/live-music/blob/master/docker-compose.yml
 cd live-music
 vim docker-compose.yml # 修改配置
 docker-compose up
