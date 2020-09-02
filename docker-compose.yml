@@ -17,30 +17,35 @@ services:
     volumes:
       - .:/usr/src/live-music
     command: bin/start
+    expose:
+      - "3000"
 
   job:
     <<: *app_base
     container_name: live-music-job
     command: bundle exec sidekiq
+    expose: []
 
   web:
     container_name: live-music-web
     image: nginx
     volumes:
-      - .:/usr/src/live-music
+      - ./config/nginx/templates/default.conf.template:/etc/nginx/templates/default.conf.template
+      - ./public:/usr/src/live-music/public
     ports:
       - "80:80"
       - "443:443"
+    environment:
+      - SITE_DOMAIN=example.com
+      - CERTBOT_EMAIL=example@example.com
 
   api:
     container_name: live-music-api
     image: node
     environment:
       - PORT=18685
-    command:
-      - git clone https://github.com/Binaryify/NeteaseCloudMusicApi.git
-      - cd NeteaseCloudMusicApi
-      - npm install
-      - node app.js
+    volumes:
+      - ./bin/start-api:/root/start-api
+    command: /root/start-api
     ports:
       - "18685:18685"

@@ -1,6 +1,5 @@
 FROM ruby:2.7.1
 
-ARG APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=true
 ARG SECRET_KEY_BASE=fake_secure_for_compile
 
 RUN gem install bundler

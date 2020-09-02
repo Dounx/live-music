@@ -14,7 +14,7 @@ workers(ENV['workers'] || 4)
 
 # Specifies the `port` that Puma will listen on to receive requests; default is 3000.
 #
-# port        ENV.fetch('PORT') { 3000 }
+port        ENV.fetch('PORT') { 3000 }
 
 # Specifies the `environment` that Puma will run in.
 #
@@ -24,7 +24,7 @@ app_dir = File.expand_path('..', __dir__)
 tmp_dir = "#{app_dir}/tmp"
 
 # Set up socket location
-bind "unix://#{tmp_dir}/sockets/puma.sock"
+# bind "unix://#{tmp_dir}/sockets/puma.sock"
 
 # Logging
 stdout_redirect "#{app_dir}/log/puma.stdout.log", "#{app_dir}/log/puma.stderr.log", true
