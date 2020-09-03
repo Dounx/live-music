@@ -32,6 +32,7 @@ services:
     volumes:
       - ./config/nginx/templates/default.conf.template:/etc/nginx/templates/default.conf.template
       - ./public:/usr/src/live-music/public
+      - ./bin/install-ssl:/usr/src/live-music/bin/install-ssl
     ports:
       - "80:80"
       - "443:443"
