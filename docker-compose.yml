@@ -18,8 +18,8 @@ services:
       - db
       - redis
     volumes:
-      - ./docker:/usr/src/live-music
-    command: /usr/src/live-music/bin/start
+      .:/usr/src/live-music
+    command: bin/start
     expose:
       - "3000"
 
@@ -37,9 +37,9 @@ services:
     depends_on:
       - app
     volumes:
-      - ./docker/config/nginx/templates/default.conf.template:/etc/nginx/templates/default.conf.template
-      - ./docker/public:/usr/src/live-music/public
-      - ./docker/bin/install-ssl:/usr/src/live-music/bin/install-ssl
+      - ./config/nginx/templates/default.conf.template:/etc/nginx/templates/default.conf.template
+      - ./public:/usr/src/live-music/public
+      - ./bin/install-ssl:/usr/src/live-music/bin/install-ssl
     ports:
       - "80:80"
       - "443:443"
@@ -55,7 +55,7 @@ services:
     environment:
       - PORT=18685
     volumes:
-      - ./docker/bin/start-api:/usr/src/live-music/bin/start-api
+      - ./bin/start-api:/usr/src/live-music/bin/start-api
     command: /usr/src/live-music/bin/start-api
     ports:
       - "18685:18685"
