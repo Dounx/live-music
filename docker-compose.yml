@@ -15,7 +15,7 @@ services:
     container_name: live-music-app
     build: .
     volumes:
-      - .:/usr/src/live-music
+      - ./docker:/usr/src/live-music
     command: bin/start
     expose:
       - "3000"
@@ -30,9 +30,9 @@ services:
     container_name: live-music-web
     image: nginx
     volumes:
-      - ./config/nginx/templates/default.conf.template:/etc/nginx/templates/default.conf.template
-      - ./public:/usr/src/live-music/public
-      - ./bin/install-ssl:/usr/src/live-music/bin/install-ssl
+      - ./docker/config/nginx/templates/default.conf.template:/etc/nginx/templates/default.conf.template
+      - ./docker/public:/usr/src/live-music/public
+      - ./docker/bin/install-ssl:/usr/src/live-music/bin/install-ssl
     ports:
       - "80:80"
       - "443:443"
@@ -46,7 +46,7 @@ services:
     environment:
       - PORT=18685
     volumes:
-      - ./bin/start-api:/root/start-api
+      - ./docker/bin/start-api:/root/start-api
     command: /root/start-api
     ports:
       - "18685:18685"
