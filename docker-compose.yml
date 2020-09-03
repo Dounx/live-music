@@ -4,6 +4,8 @@ services:
   db:
     container_name: live-music-db
     image: postgres
+    volumes:
+      - ./data/postgresql:/var/lib/postgresql/data
     environment:
       - POSTGRES_HOST_AUTH_METHOD=trust
 
@@ -18,7 +20,8 @@ services:
       - db
       - redis
     volumes:
-      - .:/usr/src/live-music
+      - ./log:/usr/src/live-music/log
+      - ./tmp:/usr/src/live-music/tmp
     command: bin/start
     expose:
       - "3000"
@@ -32,11 +35,12 @@ services:
     expose: []
 
   web:
+    <<: *app_base
     container_name: live-music-web
-    image: nginx
     depends_on:
       - app
     volumes:
+      - ./shared/ssl:/root/ssl
       - ./config/nginx/templates/default.conf.template:/etc/nginx/templates/default.conf.template
       - ./public:/usr/src/live-music/public
       - ./bin/install-ssl:/usr/src/live-music/bin/install-ssl
@@ -46,6 +50,11 @@ services:
     environment:
       - SITE_DOMAIN=example.com
       - CERTBOT_EMAIL=example@example.com
+    command: bash -c "
+        envsubst < /usr/src/live-music/config/nginx/templates/default.conf.template > /etc/nginx/conf.d/default.conf &&
+        /usr/src/live-music/bin/setup-ssl &&
+        nginx
+      "
 
   api:
     container_name: live-music-api
@@ -54,8 +63,11 @@ services:
       - app
     environment:
       - PORT=18685
-    volumes:
-      - ./bin/start-api:/usr/src/live-music/bin/start-api
-    command: /usr/src/live-music/bin/start-api
+    command: bash -c "
+        if ! [ -d NeteaseCloudMusicApi ]; then git clone https://github.com/Binaryify/NeteaseCloudMusicApi.git; fi &&
+        cd NeteaseCloudMusicApi &&
+        npm install &&
+        node app.js
+      "
     ports:
       - "18685:18685"
