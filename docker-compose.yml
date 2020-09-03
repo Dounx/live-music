@@ -19,7 +19,7 @@ services:
       - redis
     volumes:
       - ./docker:/usr/src/live-music
-    command: bin/start
+    command: /usr/src/live-music/bin/start
     expose:
       - "3000"
 
@@ -55,7 +55,7 @@ services:
     environment:
       - PORT=18685
     volumes:
-      - ./docker/bin/start-api:/root/start-api
-    command: /root/start-api
+      - ./docker/bin/start-api:/usr/src/live-music/bin/start-api
+    command: /usr/src/live-music/bin/start-api
     ports:
       - "18685:18685"
