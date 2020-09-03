@@ -14,6 +14,9 @@ services:
   app: &app_base
     container_name: live-music-app
     build: .
+    depends_on:
+      - db
+      - redis
     volumes:
       - ./docker:/usr/src/live-music
     command: bin/start
@@ -23,12 +26,16 @@ services:
   job:
     <<: *app_base
     container_name: live-music-job
+    depends_on:
+      - app
     command: bundle exec sidekiq
     expose: []
 
   web:
     container_name: live-music-web
     image: nginx
+    depends_on:
+      - app
     volumes:
       - ./docker/config/nginx/templates/default.conf.template:/etc/nginx/templates/default.conf.template
       - ./docker/public:/usr/src/live-music/public
@@ -43,6 +50,8 @@ services:
   api:
     container_name: live-music-api
     image: node
+    depends_on:
+      - app
     environment:
       - PORT=18685
     volumes:
