@@ -16,9 +16,6 @@ services:
   app: &app_base
     container_name: live-music-app
     build: .
-    depends_on:
-      - db
-      - redis
     volumes:
       - ./log:/usr/src/live-music/log
       - ./tmp:/usr/src/live-music/tmp
@@ -29,21 +26,14 @@ services:
   job:
     <<: *app_base
     container_name: live-music-job
-    depends_on:
-      - app
     command: bundle exec sidekiq
     expose: []
 
   web:
     <<: *app_base
     container_name: live-music-web
-    depends_on:
-      - app
     volumes:
-      - ./shared/ssl:/root/ssl
-      - ./config/nginx/templates/default.conf.template:/etc/nginx/templates/default.conf.template
-      - ./public:/usr/src/live-music/public
-      - ./bin/install-ssl:/usr/src/live-music/bin/install-ssl
+      - ./shared/letsencrypt:/etc/letsencrypt
     ports:
       - "80:80"
       - "443:443"
@@ -59,8 +49,6 @@ services:
   api:
     container_name: live-music-api
     image: node
-    depends_on:
-      - app
     environment:
       - PORT=18685
     command: bash -c "
