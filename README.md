@@ -25,7 +25,6 @@ tmux -f dev.tmux.conf attach
 ### 部署
 
 ```bash
-mkdir live-music && cd live-music
 git clone https://github.com/Dounx/live-music
 bin/generate-secret
 vim app.local.env
