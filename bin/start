@@ -1,6 +1,4 @@
 #!/bin/bash
 
-EDITOR="gedit --wait" rails credentials:edit
-
 bundle exec rails db:prepare
 bundle exec puma -C config/puma.rb

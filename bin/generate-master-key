@@ -1,6 +1,0 @@
-#!/bin/bash
-
-rm -f config/master.key
-rm -f config/credentials.yml.enc
-
-EDITOR="gedit --wait" rails credentials:edit

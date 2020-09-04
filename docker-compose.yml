@@ -4,8 +4,6 @@ services:
   db:
     container_name: live-music-db
     image: postgres
-    volumes:
-      - ./data/postgresql:/var/lib/postgresql/data
     environment:
       - POSTGRES_HOST_AUTH_METHOD=trust
 
@@ -19,6 +17,9 @@ services:
     volumes:
       - ./log:/usr/src/live-music/log
       - ./tmp:/usr/src/live-music/tmp
+    env_file:
+      - app.local.env
+      - app.secret.env
     command: bin/start
     expose:
       - "3000"
@@ -37,12 +38,9 @@ services:
     ports:
       - "80:80"
       - "443:443"
-    environment:
-      - SITE_DOMAIN=example.com
-      - CERTBOT_EMAIL=example@example.com
     command: bash -c "
         envsubst < /usr/src/live-music/config/nginx/templates/default.conf.template > /etc/nginx/conf.d/default.conf &&
-        /usr/src/live-music/bin/setup-ssl &&
+        /usr/src/live-music/bin/install-ssl &&
         nginx
       "
 
