@@ -27,6 +27,7 @@ tmux -f dev.tmux.conf attach
 ```bash
 mkdir live-music && cd live-music
 git clone https://github.com/Dounx/live-music
-vim docker-compose.yml # 修改配置 SITE_DOMAIN 和 CERTBOT_EMAIL
+bin/generate-secret
+vim app.local.env
 docker-compose up
 ```
