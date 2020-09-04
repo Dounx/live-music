@@ -26,6 +26,7 @@ tmux -f dev.tmux.conf attach
 
 ```bash
 git clone https://github.com/Dounx/live-music
+cd live-music
 bin/generate-secret
 vim app.local.env
 docker-compose up
