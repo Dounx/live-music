@@ -38,22 +38,16 @@ services:
     ports:
       - "80:80"
       - "443:443"
-    command: bash -c "
-        envsubst '$SITE_DOMAIN' < /usr/src/live-music/config/nginx/templates/default.conf.template > /etc/nginx/conf.d/default.conf &&
-        /usr/src/live-music/bin/install-ssl &&
-        nginx
-      "
+    entrypoint: /usr/src/live-music/config/nginx/entrypoint.sh
+    command: nginx
 
   api:
     container_name: live-music-api
     image: node
+    volumes: /usr/src/live-music/config/api/entrypoint.sh:/entrypoint.sh
     environment:
       - PORT=18685
-    command: bash -c "
-        if ! [ -d NeteaseCloudMusicApi ]; then git clone https://github.com/Binaryify/NeteaseCloudMusicApi.git; fi &&
-        cd NeteaseCloudMusicApi &&
-        npm install &&
-        node app.js
-      "
     ports:
       - "18685:18685"
+    entrypoint: /entrypoint.sh
+    command: node app.js
