@@ -2,7 +2,7 @@
 
 if [ -d /etc/letsencrypt ]
 then
-  certbot renew
-else
   certbot --nginx -n --agree-tos -m "$CERTBOT_EMAIL" -d "$SITE_DOMAIN"
+else
+  certbot renew
 fi
