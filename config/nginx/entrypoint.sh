@@ -1,6 +1,6 @@
 #!/bin/sh
 
-envsubst "$SITE_DOMAIN" < /usr/src/live-music/config/nginx/templates/default.conf.template > /etc/nginx/conf.d/default.conf
+envsubst "$SITE_DOMAIN" < /usr/src/live-music/config/nginx/templates/default.conf.template > /etc/nginx/sites-enabled/default
 
 nginx
 
