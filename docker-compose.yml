@@ -44,7 +44,8 @@ services:
   api:
     container_name: live-music-api
     image: node
-    volumes: /usr/src/live-music/config/api/entrypoint.sh:/entrypoint.sh
+    volumes:
+      - /usr/src/live-music/config/api/entrypoint.sh:/entrypoint.sh
     environment:
       - PORT=18685
     ports:
