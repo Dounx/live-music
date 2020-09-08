@@ -39,7 +39,7 @@ services:
       - "80:80"
       - "443:443"
     entrypoint: /usr/src/live-music/config/nginx/entrypoint.sh
-    command: nginx -g 'daemon off;'
+    tty: true
 
   api:
     container_name: live-music-api
