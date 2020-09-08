@@ -40,6 +40,7 @@ services:
       - "443:443"
     entrypoint: /usr/src/live-music/config/nginx/entrypoint.sh
     command: tail -f /dev/null
+    expose: []
 
   api:
     container_name: live-music-api
