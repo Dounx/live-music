@@ -4,6 +4,8 @@ services:
   db:
     container_name: live-music-db
     image: postgres
+    volumes:
+      - ./data:/var/lib/postgresql/data
     environment:
       - POSTGRES_HOST_AUTH_METHOD=trust
 
@@ -15,7 +17,7 @@ services:
     container_name: live-music-app
     build: .
     volumes:
-      - ./log:/usr/src/live-music/log
+      - ./log/rails:/usr/src/live-music/log
       - ./tmp:/usr/src/live-music/tmp
     env_file:
       - app.local.env
@@ -34,6 +36,7 @@ services:
     <<: *app_base
     container_name: live-music-web
     volumes:
+      - ./log/nginx:/var/log/nginx
       - ./shared/letsencrypt:/etc/letsencrypt
     ports:
       - "80:80"
