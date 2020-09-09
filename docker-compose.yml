@@ -50,7 +50,7 @@ services:
     environment:
       - HOST=0.0.0.0
       - PORT=18685
-    ports:
-      - "18685:18685"
     entrypoint: /entrypoint.sh
     command: node app.js
+    expose:
+      - "18685"
