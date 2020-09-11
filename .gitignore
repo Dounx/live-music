@@ -40,3 +40,4 @@ yarn-debug.log*
 /.idea
 /NeteaseCloudMusicApi
 /data
+/shared
