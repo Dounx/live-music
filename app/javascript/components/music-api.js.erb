@@ -55,9 +55,9 @@ export default class MusicApi {
       track.url = songs[track.id].url;
 
       <% if Rails.env.production? %>
-        if (track.url) {
-          track.url = track.url.replace('http', 'https');
-        }
+        // if (track.url) {
+          // track.url = track.url.replace('http', 'https');
+        // }
 
         if (track.al.picUrl) {
           track.al.picUrl = track.al.picUrl.replace('http', 'https');
