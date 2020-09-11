@@ -79,6 +79,7 @@ export default class MusicApi {
     let data = await res.json();
 
     return data.data.reduce((map, song) => {
+      song.url = `https://music.163.com/song/media/outer/url?id=${song.id}.mp3`
       map[song.id] = song;
       return map;
     }, {});
