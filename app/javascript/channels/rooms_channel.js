@@ -28,7 +28,7 @@ export default class RoomChannel {
   received(message) {
     const response = JSON.parse(message.data);
     const {type, data} = response;
-    console.log(response);
+    // console.log(response);
 
     if (needSync) {
       switch (type) {
@@ -52,7 +52,7 @@ export default class RoomChannel {
 
           break;
         default:
-          console.log(`Useless type: ${type}, data: ${data}`);
+          // console.log(`Useless type: ${type}, data: ${data}`);
       }
     } else {
         switch (type) {
@@ -62,7 +62,7 @@ export default class RoomChannel {
           case 'sync':
             break;
           default:
-            console.log(`Useless type: ${type}, data: ${data}`);
+            // console.log(`Useless type: ${type}, data: ${data}`);
       }
     }
   }
